@@ -22,6 +22,18 @@ int main(){
 
 	GLFWwindow* window = glfwCreateWindow(800, 600, "My GLFW Window", NULL, NULL);
 
+	if (window == NULL)
+	{
+		std::cout << "Failed to create GLFW window" << std::endl;
+		glfwTerminate();
+		return -1;
+	}
+
+	glfwMakeContextCurrent(window);
+	
+	gladLoadGL();
+	glViewport(0, 0, 800, 800);
+
 	while (!glfwWindowShouldClose(window)) {
 
    
@@ -32,5 +44,7 @@ int main(){
         glfwPollEvents(); 
     }
 
+	glfwDestroyWindow(window);
+	glfwTerminate();
 	return 0;
 }
