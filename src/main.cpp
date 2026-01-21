@@ -9,12 +9,19 @@
 #include <string>
 
 #include "Shader.h"
+#include "Mesh.h"
 
 GLfloat vertices[] = {
     // positions         // colors
     -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  
      0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  
      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   
+};
+
+GLuint indices[] = {
+	0, 3, 5,
+	3, 2, 4, 
+	5, 4, 1 
 };
 
 int main(){
@@ -28,26 +35,20 @@ int main(){
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	GLFWwindow* window = glfwCreateWindow(800, 600, "My GLFW Window", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(800, 800, "My GLFW Window", NULL, NULL);
+
+	glfwMakeContextCurrent(window);
+	
+	gladLoadGL();
+	glViewport(0, 0, 800, 800);
+
 
 	Shader shader("shaders/vertex.vert", "shaders/fragment.frag");
 
-	GLuint VBO;
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	std::vector<GLfloat> verticesVec(vertices, vertices + sizeof(vertices) / sizeof(vertices[0]));
+    std::vector<GLuint> indicesVec(indices, indices + sizeof(indices) / sizeof(indices[0]));
 
-	GLuint VAO;
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	// Position attribute (location = 0 in shader)
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	// Color attribute (location = 1 in shader)
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(1);
+	Mesh triangle(verticesVec, indicesVec);
 
 	if (window == NULL)
 	{
@@ -56,10 +57,6 @@ int main(){
 		return -1;
 	}
 
-	glfwMakeContextCurrent(window);
-	
-	gladLoadGL();
-	glViewport(0, 0, 800, 800);
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -67,9 +64,8 @@ int main(){
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-		shader.Activate();           // Use the shader program
-		glBindVertexArray(VAO);      // Bind the vertex data
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		shader.Activate();          
+		triangle.draw();
 
         glfwSwapBuffers(window); 
         glfwPollEvents(); 
