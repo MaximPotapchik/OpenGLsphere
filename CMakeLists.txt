@@ -15,6 +15,9 @@ find_package(glm CONFIG REQUIRED)
 # Your executable
 add_executable(${PROJECT_NAME}
     src/main.cpp
+    src/Shader.cpp
+    src/Camera.cpp
+    src/Mesh.cpp
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES

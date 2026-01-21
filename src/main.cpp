@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 
+#include "include/Shader.h"
 
 int main(){
 	if (!glfwInit()) 
