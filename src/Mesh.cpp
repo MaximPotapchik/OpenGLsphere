@@ -14,6 +14,14 @@ Mesh::Mesh(std::vector<GLfloat>& vertices, std::vector<GLuint>& indices)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int),
                      indices.data(), GL_STATIC_DRAW);
+                     
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        
+      
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), 
+                            (void*)(3 * sizeof(float)));
+        glEnableVertexAttribArray(1);
         
         
         indexCount = indices.size();

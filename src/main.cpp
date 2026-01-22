@@ -10,19 +10,9 @@
 
 #include "Shader.h"
 #include "Mesh.h"
+#include "Primitives.h"
 
-GLfloat vertices[] = {
-    // positions         // colors
-    -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  
-     0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  
-     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   
-};
 
-GLuint indices[] = {
-	0, 3, 5,
-	3, 2, 4, 
-	5, 4, 1 
-};
 
 int main(){
 	if (!glfwInit()) 
@@ -42,13 +32,13 @@ int main(){
 	gladLoadGL();
 	glViewport(0, 0, 800, 800);
 
+	MeshData sphere = generateSphere(1.0f, 30, 30);
 
 	Shader shader("shaders/vertex.vert", "shaders/fragment.frag");
 
-	std::vector<GLfloat> verticesVec(vertices, vertices + sizeof(vertices) / sizeof(vertices[0]));
-    std::vector<GLuint> indicesVec(indices, indices + sizeof(indices) / sizeof(indices[0]));
 
-	Mesh triangle(verticesVec, indicesVec);
+
+	Mesh sphereMesh(sphere.vertices, sphere.indices);
 
 	if (window == NULL)
 	{
@@ -65,7 +55,7 @@ int main(){
         glClear(GL_COLOR_BUFFER_BIT);
 
 		shader.Activate();          
-		triangle.draw();
+		sphereMesh.draw();
 
         glfwSwapBuffers(window); 
         glfwPollEvents(); 
