@@ -6,8 +6,8 @@ Camera::Camera(int width, int height)
     orientation = glm::vec3(0.0f, 0.0f, 0.0f);
     up = glm::vec3(0.0f, 1.0f, 0.0f);
     
-    moveSpeed = 0.05f;
-    zoomSpeed = 0.1f;
+    moveSpeed = 0.0005f;
+    zoomSpeed = 0.001f;
     
     fov = 45.0f;
     aspectRatio = (float)width / (float)height;
@@ -33,25 +33,29 @@ void Camera::Inputs(GLFWwindow* window)
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) 
     {
         position.y += moveSpeed;
+        orientation.y += moveSpeed;
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) 
     {
         position.y -= moveSpeed;
+        orientation.y -= moveSpeed; 
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) 
     {
         position.x -= moveSpeed;
+        orientation.x -= moveSpeed; 
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) 
     {
         position.x += moveSpeed;
+        orientation.x += moveSpeed;  
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) 
     {
-        
+        position.z -= zoomSpeed;
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) 
     {
-        
+        position.z += zoomSpeed;
     }
 }

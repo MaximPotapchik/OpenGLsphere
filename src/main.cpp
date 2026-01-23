@@ -13,7 +13,8 @@
 #include "Primitives.h"
 #include "Camera.h"
 
-int width, height = 800;
+const int width = 800;
+const int height = 800;
 
 int main(){
 	if (!glfwInit()) 
