@@ -15,19 +15,19 @@
 
 struct MeshData {
     std::vector<GLfloat> vertices;
-    std::vector<GLint> indices;
+    std::vector<GLuint> indices;
 };
 
-inline MeshData generateSphere(GLfloat radius, GLint rings, GLint sectors)
+inline MeshData generateSphere(GLfloat radius, GLuint rings, GLuint sectors)
 {
     MeshData data;
     const GLfloat PI = 3.14159265359f;
     
-    for (GLint ring = 0; ring <= rings; ring ++)
+    for (GLuint ring = 0; ring <= rings; ring ++)
     {
         GLfloat lattitude = PI * GLfloat(ring) / GLfloat(rings);
         
-        for (GLint sector = 0; sector <= sectors; sector++)
+        for (GLuint sector = 0; sector <= sectors; sector++)
         {
             GLfloat longitude = (GLfloat(sector) / GLfloat(sectors)) * 2 * PI;
 
@@ -42,13 +42,17 @@ inline MeshData generateSphere(GLfloat radius, GLint rings, GLint sectors)
             GLfloat r = (sin(lattitude) + 1.0f) * 0.5f;
             GLfloat g = (cos(longitude) + 1.0f) * 0.5f;
             GLfloat b = (sin(longitude) + 1.0f) * 0.5f;
+            
+            data.vertices.push_back(r);
+            data.vertices.push_back(g);
+            data.vertices.push_back(b);
         }
     }
 
-    for (GLint ring = 0; ring < rings; ring++) {
-        for (GLint sector = 0; sector < sectors; sector++) {
-            GLint current = ring * (sectors + 1) + sector;
-            GLint next = current + sectors + 1;
+    for (GLuint ring = 0; ring < rings; ring++) {
+        for (GLuint sector = 0; sector < sectors; sector++) {
+            GLuint current = ring * (sectors + 1) + sector;
+            GLuint next = current + sectors + 1;
             
             
             data.indices.push_back(current);

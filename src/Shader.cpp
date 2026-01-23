@@ -60,6 +60,14 @@ void Shader::Delete()
 	glDeleteProgram(ID);
 }
 
+void Shader::setMat4(const std::string& name, const glm::mat4& mat) {
+
+    GLint location = glGetUniformLocation(ID, name.c_str());
+    
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat));
+}
+
 void Shader::compileErrors(unsigned int shader, const char* type)
 {
 

@@ -11,8 +11,9 @@
 #include "Shader.h"
 #include "Mesh.h"
 #include "Primitives.h"
+#include "Camera.h"
 
-
+int width, height = 800;
 
 int main(){
 	if (!glfwInit()) 
@@ -30,7 +31,11 @@ int main(){
 	glfwMakeContextCurrent(window);
 	
 	gladLoadGL();
-	glViewport(0, 0, 800, 800);
+	glViewport(0, 0, width, height);
+
+	glEnable(GL_DEPTH_TEST);
+
+	Camera camera(width, height);
 
 	MeshData sphere = generateSphere(1.0f, 30, 30);
 
@@ -40,6 +45,8 @@ int main(){
 
 	Mesh sphereMesh(sphere.vertices, sphere.indices);
 
+
+
 	if (window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
@@ -47,14 +54,20 @@ int main(){
 		return -1;
 	}
 
+	
 
 	while (!glfwWindowShouldClose(window)) {
+		
+   		camera.Inputs(window);
 
-   
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		shader.Activate();          
+		shader.Activate();  
+
+		glm::mat4 cameraMatrix = camera.getCameraMatrix();
+		shader.setMat4("camMatrix", cameraMatrix);
+		
 		sphereMesh.draw();
 
         glfwSwapBuffers(window); 
